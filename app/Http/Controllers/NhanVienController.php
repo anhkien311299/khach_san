@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 class NhanVienController extends Controller
 {
     public function index(){
-        $nhanvienList = \App\NhanVien::all()->toArray();
-        return view('nhanvien/index', ['nhanvienList' => $nhanvienList]);
+        if (isset($_SESSION['tenNhanVien'])){
+            $nhanvienList = \App\NhanVien::all()->toArray();
+            return view('nhanvien/index', ['nhanvienList' => $nhanvienList]);
+        }else{
+            $_SESSION['err_message'] = 'Bạn cần đăng nhập trước khi truy cập hệ thống!';
+            return redirect(route('nhanvien-login'));
+        }
+
     }
 
     public function delete($id){
@@ -84,6 +90,63 @@ class NhanVienController extends Controller
         $getNhanVienById->save();
 
         return redirect(route('nhanvien-list'));
+    }
+
+    public function login(){
+        if (isset($_SESSION['tenNhanVien'])){
+            return redirect(route('phong-list'));
+        }else{
+            return view('nhanvien/login');
+        }
+    }
+
+    public function logout(){
+        unset($_SESSION['tenNhanVien']);
+        return view('nhanvien/login');
+    }
+
+    public function authenticate(){
+        $tendangnhap = @$_POST['txt_tendangnhap'];
+        $matkhau = @$_POST['txt_matkhau'];
+        $nhanvien = new NhanVien();
+        $getNhanVienByTendangnhap = $nhanvien->where('tendangnhap', 'like', $tendangnhap)->get()->toArray();
+        if (!$getNhanVienByTendangnhap){
+            $_SESSION['err_message'] = 'Tên tài khoản sai hoặc không tồn tại!';
+            return redirect(route('nhanvien-login'));
+        }elseif ($getNhanVienByTendangnhap[0]['matkhau'] != $matkhau){
+            $_SESSION['err_message'] = 'Mật khẩu đăng nhập sai!';
+            return redirect(route('nhanvien-login'));
+        }else{
+            $_SESSION['suc_message'] = 'Đăng nhập thành công';
+            $_SESSION['tenNhanVien'] = $getNhanVienByTendangnhap[0]['hoten'];
+            $_SESSION['idNhanVien'] = $getNhanVienByTendangnhap[0]['id'];
+            return redirect(route('phong-list'));
+        }
+//        var_dump($getNhanVienByTendangnhap);
+//        echo "<br>";
+//        var_dump($_POST);
+//        echo "<br>";
+//        var_dump($_SESSION);
+    }
+
+    public function demoLogin(){
+        $tendangnhap = @$_POST['txt_tendangnhap'];
+        $matkhau = @$_POST['txt_matkhau'];
+        $nhanvien = new NhanVien();
+        $getNhanVienByTendangnhap = $nhanvien->findByTendangnhap($tendangnhap);
+        if (!$getNhanVienByTendangnhap){
+            $_SESSION['err_message'] = 'Tên tài khoản sai hoặc không tồn tại!';
+        }elseif ($getNhanVienByTendangnhap[0]->matkhau != $matkhau){
+            $_SESSION['err_message'] = 'Mật khẩu đăng nhập sai!';
+        }else{
+            $_SESSION['suc_message'] = 'Đăng nhập thành công';
+            $_SESSION['tenNhanVien'] = $getNhanVienByTendangnhap[0]->hoten;
+        }
+        var_dump($getNhanVienByTendangnhap);
+        echo "<br>";
+        var_dump($_POST);
+        echo "<br>";
+        var_dump($_SESSION);
     }
 
 }

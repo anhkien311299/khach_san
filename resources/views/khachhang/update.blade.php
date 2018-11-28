@@ -1,8 +1,8 @@
-<?php
-//    dd($getNhanVienById);
-//?>
+@extends('layout/backend')
 
-<h2><b>Sửa thông tin Khách Hàng</b></h2>
+@section('content')
+
+<h2>Sửa thông tin Khách Hàng</h2>
 
 <form action="{{route('khachhang-updatesave')}}" method="post" name="myForm" onsubmit="return validateForm()">
     <table border="1px" cellpadding="5px">
@@ -64,3 +64,5 @@
         </tr>
     </table>
 </form>
+
+@endsection

@@ -2,7 +2,8 @@
 
 @section('content')
 
-<h2>Sửa thông tin Dịch Vụ</h2>
+
+<h2>Sửa thông tin Phòng</h2>
 
 <form action="{{route('dichvu-updatesave')}}" method="post" name="myForm" onsubmit="return validateForm()">
     <table border="1px" cellpadding="5px">

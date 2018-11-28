@@ -78,4 +78,37 @@ class KhachHangController extends Controller
         KhachHang::find($id)->delete();
         return redirect()->action('KhachHangController@index');
     }
+
+    public function login(){
+        return view('khachhang/login');
+    }
+
+    public function logout(){
+        unset($_SESSION['tenKhachHang']);
+        return view('khachhang/login');
+    }
+
+    public function authenticate(){
+        $tendangnhap = @$_POST['txt_tendangnhap'];
+        $matkhau = @$_POST['txt_matkhau'];
+        $khachhang = new KhachHang();
+        $getKhachHangByTendangnhap = $khachhang->where('tendangnhap', 'like', $tendangnhap)->get()->toArray();
+        if (!$getKhachHangByTendangnhap){
+            $_SESSION['err_message'] = 'Tên tài khoản sai hoặc không tồn tại!';
+            return redirect(route('khachhang-login'));
+        }elseif ($getKhachHangByTendangnhap[0]['matkhau'] != $matkhau){
+            $_SESSION['err_message'] = 'Mật khẩu đăng nhập sai!';
+            return redirect(route('khachhang-login'));
+        }else{
+            $_SESSION['suc_message'] = 'Đăng nhập thành công';
+            $_SESSION['tenKhachHang'] = $getKhachHangByTendangnhap[0]['hoten'];
+            $_SESSION['idKhachHang'] = $getKhachHangByTendangnhap[0]['id'];
+
+        }
+        var_dump($getKhachHangByTendangnhap);
+        echo "<br>";
+        var_dump($_POST);
+        echo "<br>";
+        var_dump($_SESSION);
+    }
 }

@@ -1,4 +1,8 @@
-<h2><b>Thêm mới Khách Hàng</b></h2>
+@extends('layout/backend')
+
+@section('content')
+
+<h2>Thêm mới Khách Hàng</h2>
 
 <form action="{{route('khachhang-addsave')}}" method="post" name="myForm" onsubmit="return validateForm()">
     <table border="1px" cellpadding="5px">
@@ -59,3 +63,5 @@
         </tr>
     </table>
 </form>
+
+@endsection

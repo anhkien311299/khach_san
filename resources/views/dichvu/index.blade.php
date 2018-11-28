@@ -1,3 +1,7 @@
+@extends('layout/backend')
+
+@section('content')
+
 <h2>Danh sách Dịch Vụ</h2>
 <a href="{{route('dichvu-add')}}">Thêm mới</a>
 <table border="1px" cellpadding="5px">
@@ -23,3 +27,5 @@
     </tr>
     <?php endforeach ?>
 </table>
+
+@endsection

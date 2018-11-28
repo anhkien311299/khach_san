@@ -3,37 +3,40 @@
 @section('content')
 
 <div align="center">
-    <h2>Thêm mới Loại Phòng</h2>
+    <h2>Thêm mới Phòng</h2>
 
-    <form action="{{route('loaiphong-addsave')}}" method="post" name="myForm" onsubmit="return validateForm()">
+    <form action="{{route('phong-addsave')}}" method="post" name="myForm" onsubmit="return validateForm()">
         <table border="1px" cellpadding="5px">
             <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
             <tr>
-                <th>Tên loại phòng</th>
+                <th>Tên phòng</th>
                 <td>
-                    <input class="form-control" type="text" name="txt_ten" id="ten">
+                    <input type="text" name="txt_ten" id="ten">
                 </td>
             </tr>
             <tr>
-                <th>Giá</th>
+                <th>Trạng thái</th>
                 <td>
-                    <input class="form-control" type="text" name="txt_gia" id="gia">
+                    <input type="radio" name="rd_trangthai" id="dadat" value="1">Đã đặt
+                    <input type="radio" name="rd_trangthai" id="chuadat" value="0">Chưa đặt
                 </td>
             </tr>
             <tr>
-                <th>Mô tả</th>
+                <th>Id Loại phòng</th>
                 <td>
-                    <textarea name="txt_mota" id="mota" cols="30" rows="10"></textarea>
+                    <input type="text" name="txt_loaiphong_id" id="loaiphong_id">
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="center">
                     <input class="btn btn-primary btn-sm" type="submit" value="Thêm mới">
+
                 </td>
             </tr>
         </table>
     </form>
 </div>
+
 
 
 @endsection

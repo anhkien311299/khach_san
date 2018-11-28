@@ -1,7 +1,12 @@
+@extends('layout/backend')
+
+@section('content')
+
 <h2>Danh sách Khách Hàng</h2>
 <a href="{{route('khachhang-add')}}">Thêm mới</a>
 <table border="1px" cellpadding="5px">
     <tr>
+        <th>Id</th>
         <th>Họ tên</th>
         <th>Giới tính</th>
         <th>Địa chỉ</th>
@@ -15,6 +20,7 @@
     </tr>
     <?php foreach ($khachhangList as $khachhang): ?>
     <tr>
+        <td>{{$khachhang['id']}}</td>
         <td>{{$khachhang['hoten']}}</td>
         <td>
             <?php
@@ -43,3 +49,5 @@
     </tr>
     <?php endforeach ?>
 </table>
+
+@endsection
