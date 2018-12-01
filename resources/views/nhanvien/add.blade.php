@@ -6,7 +6,7 @@
     <h2>Thêm mới Nhân Viên</h2>
 
     <form action="{{route('nhanvien-addsave')}}" method="post" name="myForm" onsubmit="return validateForm()">
-        <table border="1px" cellpadding="5px">
+        <table class="table table-bordered">
             <input class="form-control" type="hidden" name="_token" value="{{{ csrf_token() }}}" />
             <tr>
                 <th>Họ tên</th>
@@ -18,6 +18,7 @@
                 <th>Giới tính</th>
                 <td>
                     <input type="radio" name="rd_gioitinh" id="nam" value="1">Nam
+                    &emsp;&emsp;&emsp;&emsp;&emsp;
                     <input type="radio" name="rd_gioitinh" id="nu" value="0">Nữ
                 </td>
             </tr>

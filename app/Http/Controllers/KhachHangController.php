@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\KhachHang;
 use Illuminate\Http\Request;
 
 class KhachHangController extends Controller
 {
     public function index(){
-        $khachhangList = \App\KhachHang::all()->toArray();
+//        $khachhangList = \App\KhachHang::all()->toArray();
+        $keyword = isset($_GET['txt_keyword']) ? $_GET['txt_keyword'] : '';
+        $khachhangList = DB::table('tbl_khachhang')->where('hoten', 'like', "%$keyword%")->orWhere('diachi', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->orWhere('sdt', 'like', "$keyword")->orWhere('socmnd', 'like', "$keyword")->paginate(4);
         return view('khachhang/index', ['khachhangList' => $khachhangList]);
+
     }
 
     public function add(){
@@ -37,6 +41,7 @@ class KhachHangController extends Controller
         $khachhang->matkhau = $matkhau;
 
         $khachhang->save();
+        $_SESSION['nhanvien_success_message'] = 'Thêm mới thành công';
 
         return redirect(route('khachhang-list'));
     }
@@ -70,12 +75,14 @@ class KhachHangController extends Controller
         $getKhachHangById->matkhau = $matkhau;
 
         $getKhachHangById->save();
+        $_SESSION['nhanvien_success_message'] = 'Sửa thành công';
 
         return redirect(route('khachhang-list'));
     }
 
     public function delete($id){
         KhachHang::find($id)->delete();
+        $_SESSION['nhanvien_success_message'] = 'Xóa thành công';
         return redirect()->action('KhachHangController@index');
     }
 
@@ -100,7 +107,7 @@ class KhachHangController extends Controller
             $_SESSION['err_message'] = 'Mật khẩu đăng nhập sai!';
             return redirect(route('khachhang-login'));
         }else{
-            $_SESSION['suc_message'] = 'Đăng nhập thành công';
+            $_SESSION['khachhang_success_message'] = 'Đăng nhập thành công';
             $_SESSION['tenKhachHang'] = $getKhachHangByTendangnhap[0]['hoten'];
             $_SESSION['idKhachHang'] = $getKhachHangByTendangnhap[0]['id'];
 

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\LoaiPhong;
 use Illuminate\Http\Request;
 
 class LoaiPhongController extends Controller
 {
     public function index(){
-        $loaiphongList = \App\LoaiPhong::all()->toArray();
+//        $loaiphongList = \App\LoaiPhong::all()->toArray();
+        $keyword = isset($_GET['txt_keyword']) ? $_GET['txt_keyword'] : '';
+        $loaiphongList = DB::table('tbl_loaiphong')->where('tenloaiphong', 'like', "%$keyword%")->orWhere('gia', '=', "$keyword")->orWhere('mota', 'like', "%$keyword%")->paginate(4);
         return view('loaiphong/index', ['loaiphongList' => $loaiphongList]);
     }
 
@@ -17,17 +20,17 @@ class LoaiPhongController extends Controller
     }
 
     public function addsave(){
-        $ten = $_POST['txt_ten'];
+        $tenloaiphong = $_POST['txt_tenloaiphong'];
         $gia = $_POST['txt_gia'];
         $mota = $_POST['txt_mota'];
 
         $loaiphong = new LoaiPhong();
-        $loaiphong->ten = $ten;
+        $loaiphong->tenloaiphong = $tenloaiphong;
         $loaiphong->gia = $gia;
         $loaiphong->mota = $mota;
 
         $loaiphong->save();
-
+        $_SESSION['nhanvien_success_message'] = 'Thêm mới thành công';
         return redirect(route('loaiphong-list'));
     }
 
@@ -39,23 +42,26 @@ class LoaiPhongController extends Controller
 
     public function updatesave(){
         $id = $_POST['txt_id'];
-        $ten = $_POST['txt_ten'];
+        $tenloaiphong = $_POST['txt_tenloaiphong'];
         $gia = $_POST['txt_gia'];
         $mota = $_POST['txt_mota'];
 
         $loaiphong = new LoaiPhong();
         $getLoaiPhongById = $loaiphong->find($id);
-        $getLoaiPhongById->ten = $ten;
+        $getLoaiPhongById->tenloaiphong = $tenloaiphong;
         $getLoaiPhongById->gia = $gia;
         $getLoaiPhongById->mota = $mota;
 
         $getLoaiPhongById->save();
+        $_SESSION['nhanvien_success_message'] = 'Sửa thành công';
 
         return redirect(route('loaiphong-list'));
     }
 
     public function delete($id){
         LoaiPhong::find($id)->delete();
+        $_SESSION['nhanvien_success_message'] = 'Xóa thành công';
+
         return redirect()->action('LoaiPhongController@index');
     }
 }

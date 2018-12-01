@@ -61,3 +61,18 @@ Route::post('phong/add', 'PhongController@addsave')->name('phong-addsave');
 Route::get('phong/{id}/update', 'PhongController@update')->name('phong-update');
 Route::post('phong/update', 'PhongController@updatesave')->name('phong-updatesave');
 Route::get('phong/{id}/delete', 'PhongController@delete')->name('phong-delete');
+
+Route::get('datphong', 'DatPhongController@index')->name('datphong-list');
+Route::get('datphong/add', 'DatPhongController@add')->name('datphong-add');
+Route::post('datphong/add', 'DatPhongController@addsave')->name('datphong-addsave');
+Route::get('datphong/{id}/update', 'DatPhongController@update')->name('datphong-update');
+Route::post('datphong/update', 'DatPhongController@updatesave')->name('datphong-updatesave');
+Route::get('datphong/{id}/delete', 'DatPhongController@delete')->name('datphong-delete');
+
+Route::get('datphong_phong', 'DatPhong_PhongController@index')->name('datphong_phong-list');
+Route::get('datphong_phong/{id}/add', 'DatPhong_PhongController@add')->name('datphong_phong-add');
+Route::post('datphong_phong/add', 'DatPhong_PhongController@addsave')->name('datphong_phong-addsave');
+Route::get('datphong_phong/{id}/update', 'DatPhong_PhongController@update')->name('datphong_phong-update');
+Route::post('datphong_phong/update', 'DatPhong_PhongController@updatesave')->name('datphong_phong-updatesave');
+Route::get('datphong_phong/{id}/delete', 'DatPhong_PhongController@delete')->name('datphong_phong-delete');
+

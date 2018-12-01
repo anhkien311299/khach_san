@@ -2,37 +2,52 @@
 
 @section('content')
 
+<div align="center">
+    <h2>Sửa thông tin Phòng</h2>
 
-<h2>Sửa thông tin Phòng</h2>
+    <form action="{{route('phong-updatesave')}}" method="post" name="myForm" onsubmit="return validateForm()">
+        <table class="table table-bordered">
+            <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+            <input type="hidden" name="txt_id" value="{{ old('id_phong', $getPhongById['id_phong']) }}">
+            <tr>
+                <th>Tên phòng</th>
+                <td>
+                    <input class="form-control" type="text" name="txt_tenphong" id="tenphong" value="{{ old('tenphong', $getPhongById['tenphong']) }}" >
+                </td>
+            </tr>
+            <tr>
+                <th>Loại phòng</th>
+                <td>
+                    <select name="sl_loaiphong" id="loaiphong">
+                        <?php foreach ($loaiphongList as $loaiphong): ?>
+                        <option value="{{$loaiphong['id_loaiphong']}}" <?= (old('loaiphong_id', $getPhongById['loaiphong_id']) == $loaiphong['id_loaiphong']) ? 'selected': '' ?> >{{$loaiphong['tenloaiphong']}}</option>
+                        <?php endforeach ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Trạng thái</th>
+                <td>
+                    <input type="radio" name="rd_trangthai" id="dadat" value="1" <?= (old('trangthai', $getPhongById['trangthai']) == 1) ? 'checked': ''?> >Có khách
+                    &emsp;&emsp;&emsp;&emsp;&emsp;
+                    <input type="radio" name="rd_trangthai" id="chuadat" value="0" <?= (old('trangthai', $getPhongById['trangthai']) == 0) ? 'checked': ''?> >Không có khách
+                </td>
+            </tr>
 
-<form action="{{route('dichvu-updatesave')}}" method="post" name="myForm" onsubmit="return validateForm()">
-    <table border="1px" cellpadding="5px">
-        <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-        <input type="hidden" name="txt_id" value="{{ old('id', $getDichVuById['id']) }}">
-        <tr>
-            <th>Tên dịch vụ</th>
-            <td>
-                <input type="text" name="txt_ten" id="ten" value="{{ old('ten', $getDichVuById['ten']) }}" >
-            </td>
-        </tr>
-        <tr>
-            <th>Giá</th>
-            <td>
-                <input type="text" name="txt_gia" id="gia" value="{{ old('gia', $getDichVuById['gia']) }}" >
-            </td>
-        </tr>
-        <tr>
-            <th>Mô tả</th>
-            <td>
-                <textarea name="txt_mota" id="mota" cols="30" rows="10">{{ old('mota', $getDichVuById['mota']) }}</textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" value="Sửa">
-            </td>
-        </tr>
-    </table>
-</form>
+            {{--<tr>--}}
+                {{--<th>Id Hóa đơn đặt phòng</th>--}}
+                {{--<td>--}}
+                    {{--<input class="form-control" type="text" name="txt_datphong_id" id="datphong_id" value="{{ old('datphong_id', $getPhongById['datphong_id']) }}" >--}}
+                {{--</td>--}}
+            {{--</tr>--}}
+            <tr>
+                <td colspan="2" align="center">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Sửa">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
 
 @endsection

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\DichVu;
 use Illuminate\Http\Request;
 
 class DichVuController extends Controller
 {
     public function index(){
-        $dichvuList = \App\DichVu::all()->toArray();
+//        $dichvuList = \App\DichVu::all()->toArray();
+        $keyword = isset($_GET['txt_keyword']) ? $_GET['txt_keyword'] : '';
+        $dichvuList = DB::table('tbl_dichvu')->where('ten', 'like', "%$keyword%")->orWhere('gia', '=', "$keyword")->orWhere('mota', 'like', "%$keyword%")->paginate(4);
         return view('dichvu/index', ['dichvuList' => $dichvuList]);
     }
 
@@ -27,6 +30,7 @@ class DichVuController extends Controller
         $dichvu->mota = $mota;
 
         $dichvu->save();
+        $_SESSION['nhanvien_success_message'] = 'Thêm mới thành công';
 
         return redirect(route('dichvu-list'));
     }
@@ -50,12 +54,15 @@ class DichVuController extends Controller
         $getDichVuById->mota = $mota;
 
         $getDichVuById->save();
+        $_SESSION['nhanvien_success_message'] = 'Sửa thành công';
 
         return redirect(route('dichvu-list'));
     }
 
     public function delete($id){
         DichVu::find($id)->delete();
+        $_SESSION['nhanvien_success_message'] = 'Xóa thành công';
+
         return redirect()->action('DichVuController@index');
     }
 }

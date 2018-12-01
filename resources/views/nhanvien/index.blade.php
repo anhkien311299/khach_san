@@ -5,10 +5,31 @@
 @section('content')
     <div align="center">
         <h2>Danh sách Nhân viên</h2>
+        <?php
+        if (isset($_SESSION['err_message'])){
+            echo "<p style='color: red'>".$_SESSION['err_message']."</p>";
+            unset($_SESSION['err_message']);
+        }
+        if (isset($_SESSION['nhanvien_success_message'])){
+            echo "<p style='color: green'>".$_SESSION['nhanvien_success_message']."</p>";
+            unset($_SESSION['nhanvien_success_message']);
+        }
+        ?>
+    <!-- search form -->
+        <form action="" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="txt_keyword" class="form-control" value="<?= isset($_GET['txt_keyword']) ? $_GET['txt_keyword']: ''?>" placeholder="Tìm kiếm theo Họ tên, Địa chỉ, Email, Số ĐT, Số CMND">
+                <span class="input-group-btn">
+                <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>
+        <!-- /.search form -->
         <a href="{{route('nhanvien-add')}}">
             <button type="button" class="btn btn-primary btn-sm">Thêm mới</button>
         </a>
-        <table border="1px" cellpadding="15px">
+        <table class="table table-bordered">
             <tr>
                 <th>Id</th>
                 <th>Họ tên</th>
@@ -24,50 +45,40 @@
             </tr>
             <?php foreach ($nhanvienList as $nhanvien): ?>
             <tr>
-                <td>{{$nhanvien['id']}}</td>
-                <td>{{$nhanvien['hoten']}}</td>
+                <td>{{$nhanvien->id}}</td>
+                <td>{{$nhanvien->hoten}}</td>
                 <td>
                     <?php
-                    if ($nhanvien['gioitinh'] == 1){
+                    if ($nhanvien->gioitinh == 1){
                         echo "Nam";
-                    }else if ($nhanvien['gioitinh'] == 0){
+                    }else if ($nhanvien->gioitinh == 0){
                         echo "Nữ";
                     }else{
                         echo '';
                     }
                     ?>
                 </td>
-                <td>{{$nhanvien['diachi']}}</td>
-                <td>{{$nhanvien['email']}}</td>
-                <td>{{$nhanvien['sdt']}}</td>
-                <td>{{$nhanvien['socmnd']}}</td>
-                <td>{{$nhanvien['tendangnhap']}}</td>
-                <td>{{$nhanvien['matkhau']}}</td>
-                <td>{{$nhanvien['ngaytao']}}</td>
+                <td>{{$nhanvien->diachi}}</td>
+                <td>{{$nhanvien->email}}</td>
+                <td>{{$nhanvien->sdt}}</td>
+                <td>{{$nhanvien->socmnd}}</td>
+                <td>{{$nhanvien->tendangnhap}}</td>
+                <td>{{$nhanvien->matkhau}}</td>
+                <td>{{$nhanvien->ngaytao}}</td>
                 <td>
-                    {{--<form action="{{route('nhanvien-update')}}" method="post">--}}
-                    {{--<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />--}}
-                    {{--<input type="hidden" name="txt_id" value="{{$nhanvien['id']}}">--}}
-                    {{--<input type="submit" value="Sửa">--}}
-                    {{--</form>--}}
-
-                    <a href="nhanvien/<?= $nhanvien['id']?>/update">
+                    <a href="nhanvien/<?= $nhanvien->id?>/update">
                         <button type="button" class="btn btn-primary btn-sm">Sửa</button>
                     </a>
                 </td>
                 <td>
-                    {{--<form action="{{route('nhanvien-delete')}}" method="post">--}}
-                    {{--<input type="hidden" name="_token" value="{{{ csrf_token() }}}" />--}}
-                    {{--<input type="hidden" name="txt_id" value="{{$nhanvien['id']}}">--}}
-                    {{--<input type="submit" value="Xóa">--}}
-                    {{--</form>--}}
-                    <a onclick="return confirm('Xác nhận xóa?')" href="nhanvien/<?= $nhanvien['id']?>/delete">
-                        <button type="button" class="btn btn-primary btn-sm">Xóa</button>
+                    <a onclick="return confirm('Xác nhận xóa?')" href="nhanvien/<?= $nhanvien->id?>/delete">
+                            <button type="button" class="btn btn-danger btn-sm">Xóa</button>
                     </a>
                 </td>
             </tr>
             <?php endforeach ?>
-        </table border="1px">
+        </table>
+        {!! $nhanvienList->render() !!}
     </div>
 
 

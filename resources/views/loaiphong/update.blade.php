@@ -6,13 +6,13 @@
     <h2>Sửa thông tin Loại Phòng</h2>
 
     <form action="{{route('loaiphong-updatesave')}}" method="post" name="myForm" onsubmit="return validateForm()">
-        <table border="1px" cellpadding="5px">
+        <table class="table table-bordered">
             <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-            <input type="hidden" name="txt_id" value="{{ old('id', $getLoaiPhongById['id']) }}">
+            <input type="hidden" name="txt_id" value="{{ old('id_loaiphong', $getLoaiPhongById['id_loaiphong']) }}">
             <tr>
                 <th>Tên loại phòng</th>
                 <td>
-                    <input class="form-control" type="text" name="txt_ten" id="ten" value="{{ old('ten', $getLoaiPhongById['ten']) }}" >
+                    <input class="form-control" type="text" name="txt_tenloaiphong" id="tenloaiphong" value="{{ old('ten', $getLoaiPhongById['tenloaiphong']) }}" >
                 </td>
             </tr>
             <tr>
@@ -24,7 +24,7 @@
             <tr>
                 <th>Mô tả</th>
                 <td>
-                    <textarea name="txt_mota" id="mota" cols="30" rows="10">{{ old('mota', $getLoaiPhongById['mota']) }}</textarea>
+                    <textarea class="form-control" name="txt_mota" id="mota" cols="30" rows="10">{{ old('mota', $getLoaiPhongById['mota']) }}</textarea>
                 </td>
             </tr>
             <tr>

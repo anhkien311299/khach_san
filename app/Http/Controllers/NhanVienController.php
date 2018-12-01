@@ -2,20 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\NhanVien;
 use Illuminate\Http\Request;
 
 class NhanVienController extends Controller
 {
+//    public function index(){
+//        if (isset($_SESSION['tenNhanVien'])){
+//            $nhanvienList = \App\NhanVien::all()->toArray();
+////            dd($nhanvienList);
+//            return view('nhanvien/index', ['nhanvienList' => $nhanvienList]);
+//
+//        }else{
+//            $_SESSION['err_message'] = 'Bạn cần đăng nhập trước khi truy cập hệ thống!';
+//            return redirect(route('nhanvien-login'));
+//        }
+//    }
+
     public function index(){
         if (isset($_SESSION['tenNhanVien'])){
-            $nhanvienList = \App\NhanVien::all()->toArray();
+//            $nhanvienList = \App\NhanVien::all()->toArray();
+            $keyword = isset($_GET['txt_keyword']) ? $_GET['txt_keyword'] : '';
+            $nhanvienList = DB::table('tbl_nhanvien')->where('hoten', 'like', "%$keyword%")->orWhere('diachi', 'like', "%$keyword%")->orWhere('email', 'like', "%$keyword%")->orWhere('sdt', 'like', "$keyword")->orWhere('socmnd', 'like', "$keyword")->paginate(4);
+//            dd($nhanvienList);
             return view('nhanvien/index', ['nhanvienList' => $nhanvienList]);
+
         }else{
             $_SESSION['err_message'] = 'Bạn cần đăng nhập trước khi truy cập hệ thống!';
             return redirect(route('nhanvien-login'));
         }
-
     }
 
     public function delete($id){
@@ -24,6 +40,8 @@ class NhanVienController extends Controller
 //        $nhanvien->delete();
 //        return redirect(route('nhanvien-list'));
         NhanVien::find($id)->delete();
+        $_SESSION['nhanvien_success_message'] = 'Xóa thành công';
+
         return redirect()->action('NhanVienController@index');
     }
 
@@ -52,6 +70,7 @@ class NhanVienController extends Controller
         $nhanvien->matkhau = $matkhau;
 
         $nhanvien->save();
+        $_SESSION['nhanvien_success_message'] = 'Thêm mới thành công';
 
         return redirect(route('nhanvien-list'));
     }
@@ -88,6 +107,7 @@ class NhanVienController extends Controller
         $getNhanVienById->matkhau = $matkhau;
 
         $getNhanVienById->save();
+        $_SESSION['nhanvien_success_message'] = 'Sửa thành công';
 
         return redirect(route('nhanvien-list'));
     }
@@ -117,7 +137,7 @@ class NhanVienController extends Controller
             $_SESSION['err_message'] = 'Mật khẩu đăng nhập sai!';
             return redirect(route('nhanvien-login'));
         }else{
-            $_SESSION['suc_message'] = 'Đăng nhập thành công';
+            $_SESSION['nhanvien_success_message'] = 'Đăng nhập thành công';
             $_SESSION['tenNhanVien'] = $getNhanVienByTendangnhap[0]['hoten'];
             $_SESSION['idNhanVien'] = $getNhanVienByTendangnhap[0]['id'];
             return redirect(route('phong-list'));
@@ -139,7 +159,7 @@ class NhanVienController extends Controller
         }elseif ($getNhanVienByTendangnhap[0]->matkhau != $matkhau){
             $_SESSION['err_message'] = 'Mật khẩu đăng nhập sai!';
         }else{
-            $_SESSION['suc_message'] = 'Đăng nhập thành công';
+            $_SESSION['nhanvien_success_message'] = 'Đăng nhập thành công';
             $_SESSION['tenNhanVien'] = $getNhanVienByTendangnhap[0]->hoten;
         }
         var_dump($getNhanVienByTendangnhap);

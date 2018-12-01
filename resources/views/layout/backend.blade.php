@@ -107,6 +107,17 @@
                         <i class="fa fa-dashboard"></i> <span>Quản lý Dịch vụ</span>
                     </a>
                 </li>
+                <li class="active">
+                    <a href="{{route('datphong-list')}}">
+                        <i class="fa fa-dashboard"></i> <span>Quản lý Hóa đơn Đặt phòng</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{{route('datphong_phong-list')}}">
+                        <i class="fa fa-dashboard"></i> <span>Danh sách Phòng đã đặt</span>
+                    </a>
+                </li>
+
 
             </ul>
         </section>
