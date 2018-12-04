@@ -14,6 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('khachsan', function () {
+    return view('khachsan/trang_chu');
+});
+Route::get('khachsan/nhahang/trungquoc', function () {
+    return view('khachsan/nhahang/trungquoc');
+});
+Route::get('khachsan/datphong', function () {
+    return view('khachsan/datphong');
 
 
 
